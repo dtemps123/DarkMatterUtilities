@@ -111,6 +111,24 @@ class Target:
 
 		return _Ss0 * _jterm * _expfac
 
+	def HelmFormFactor_v2(self, _Er_keV):
+		# [arXiv:0608035] Duda et al 2007
+		_a 		= 0.52													# fm
+		_s 		= 0.9													# fm
+		_c      = (1.23 * n.power(self.A,1./3.)) - 0.60					# fm
+		_R1     = n.sqrt(  (_c**2) 
+			             + ( (7./3.)*(n.pi**2)*(_a**2) ) 
+			             - ( 5.0*(_s**2) )   )							# fm
+
+		_q 		= n.sqrt(2.0 * _Er_keV * self.NuclearMass_GeV)			# MeV / c
+		_qs		= (_s  / hbarc_MeV_fm) * _q								# dimensionless
+		_qR1 	= (_R1 / hbarc_MeV_fm) * _q								# dimensionless
+
+		_expfac	= n.exp(-1.0 * _qs**2)									# dimensionless
+		_jterm	= ( 3.0 * jv(1, _qR1) / _qR1 )**2						# dimensionless
+
+		return _jterm * _expfac
+
 	def LindhardFactor(self, _Er_keV):
 		# Determine the lindhard factor for a nuclear recoil of a specified recoil energy in keV
 		_Z 	= self.Z
@@ -165,8 +183,8 @@ class DarkMatter:
 	Rmass_DM_proton = 1.0		# kg
 
 	def __init__(self, _Mass, _Sigma):
-		self.Mass 				= _Mass
-		self.Sigma 				= _Sigma
+		self.Mass 				= _Mass 		# Mass of DM particle in GeV/c^2
+		self.Sigma 				= _Sigma 		# Spin-independent DM-proton elastic scattering cross-section in cm^2
 		self.Rmass_DM_proton	= (( _Mass * m_proton_GeV ) / ( _Mass + m_proton_GeV)) * GeV_to_kg
 
 	def MaxwellBoltzmann_PDF_ms(self, _v):
