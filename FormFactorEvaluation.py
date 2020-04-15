@@ -26,7 +26,7 @@ plot_ff_type0 = n.zeros(len(plot_Erange))
 plot_ff_type1 = n.zeros(len(plot_Erange))
 plot_ff_type2 = n.zeros(len(plot_Erange))
 plot_ff_type3 = n.zeros(len(plot_Erange))
-plot_ff_type4 = n.zeros(len(plot_Erange))
+# plot_ff_type4 = n.zeros(len(plot_Erange))
 plot_ff_Helm  = n.zeros(len(plot_Erange))
 plot_ff_Helm2 = n.zeros(len(plot_Erange))
 for i in n.arange(len(plot_Erange)):
@@ -42,8 +42,8 @@ for i in n.arange(len(plot_Erange)):
 	LZ_target.FF_type = 3
 	plot_ff_type3[i] = LZ_target.FormFactor(plot_Erange[i])
 
-	LZ_target.FF_type = 4
-	plot_ff_type4[i] = LZ_target.FormFactor(plot_Erange[i])
+	# LZ_target.FF_type = 4
+	# plot_ff_type4[i] = LZ_target.FormFactor(plot_Erange[i])
 
 	plot_ff_Helm[i]  = LZ_target.HelmFormFactor(plot_Erange[i])
 	plot_ff_Helm2[i] = LZ_target.HelmFormFactor_v2(plot_Erange[i])
@@ -59,7 +59,7 @@ pyp.plot(plot_Erange , plot_ff_type0 , color='r' , label="(0) Thin shell: exp[-$
 pyp.plot(plot_Erange , plot_ff_type1 , color='g' , label="(1) Thin shell: $[ \sin (q r_n) / (q r_n) ]^2$" )
 pyp.plot(plot_Erange , plot_ff_type2 , color='b' , label="(2) Solid sphere: exp[-$(q r_n)^{2/3} / 5$]" )
 pyp.plot(plot_Erange , plot_ff_type3 , color='c' , label="(3) Solid sphere: $\{ 3 [ \sin(q r_n) - q r_n \cos(q r_n)] / (q r_n)^3 \}^2$" )
-pyp.plot(plot_Erange , plot_ff_type4 , color='k' , label="(4) Two-parameter Fermi" )
+# pyp.plot(plot_Erange , plot_ff_type4 , color='k' , label="(4) Two-parameter Fermi" )
 pyp.plot(plot_Erange , plot_ff_Helm  , color='m' , label="Helm Form Factor" )
 pyp.plot(plot_Erange , plot_ff_Helm2 , color='y' , label="Helm Form Factor v2" )
 
@@ -79,7 +79,7 @@ ax1.set_yscale('log')
 pyp.plot(plot_qrn , plot_ff_type1 , 'r:'  , label="(1) Thin shell: $[ \sin (q r_n) / (q r_n) ]^2$" )
 # pyp.plot(plot_qrn , plot_ff_type2 , 'b--' , label="(2) Solid sphere: exp[-$(q r_n)^{2/3} / 5$]" )
 pyp.plot(plot_qrn , plot_ff_type3 , 'b:'  , label="(3) Solid sphere: $\{ 3 [ \sin(q r_n) - q r_n \cos(q r_n)] / (q r_n)^3 \}^2$" )
-pyp.plot(plot_qrn , plot_ff_type4 , 'g-'  , label="(4) Two-parameter Fermi" )
+# pyp.plot(plot_qrn , plot_ff_type4 , 'g-'  , label="(4) Two-parameter Fermi" )
 pyp.plot(plot_qrn , plot_ff_Helm  , color='m' , label="Helm Form Factor" )
 pyp.plot(plot_qrn , plot_ff_Helm2 , color='y' , label="Helm Form Factor v2" )
 
