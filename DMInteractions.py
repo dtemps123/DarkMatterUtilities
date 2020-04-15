@@ -27,8 +27,13 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	_dru			= _DM_num_dens * _coupling * _formfactor * _MBfactor[0] * _unitfactors	# Hz / kg / keV
 	return _dru*1000.
 
-def IntegratedRate(_threshold_keV, _target, _dm):
+def IntegratedRate(_threshold_E_keV, _target, _dm):
 	# Integrate the differential rate from threshold up to the maximum energy a DM particle can deposit
 	_maxE 			= _target.RecoilEnergyMax_DM_keV(_dm.Mass)								# keV
-	_rate			= quad( DifferentialRate, _threshold_keV, _maxE, args=(_target, _dm))	# Hz / kg / keV
-	return _rate[0] * (365.25 * 24. * 3600.) * _target.TotalMass 							# Cts / total mass / year
+	_rate			= quad( DifferentialRate, _threshold_E_keV, _maxE, args=(_target, _dm))	# Hz / kg / keV
+	return _rate[0] * (365.25 * 24. * 3600.) * _target.TotalMass 							# Cts / total mass / year\\
+
+def TruncatedIntegratedRate(_threshold_E_keV, _max_E_keV, _target, _dm):
+	# Integrate the differential rate from threshold up to a specified maximum energy
+	_rate			= quad( DifferentialRate, _threshold_E_keV, _max_E_keV, args=(_target, _dm))	# Hz / kg / keV
+	return _rate[0] * (365.25 * 24. * 3600.) * _target.TotalMass 									# Cts / total mass / year\\
