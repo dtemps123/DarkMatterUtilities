@@ -24,10 +24,33 @@ X1T_Npoints = len(X1T_mass_vals)
 # Array to store results points in
 LZ_Max_N_obs = n.zeros(X1T_Npoints)
 
+# Calculate max # of salt LZ will observe
 for i in n.arange(X1T_Npoints):
 	this_DM = DarkMatter(X1T_mass_vals[i], X1T_xsec_vals[i])
 	this_Nevts_per_yeaR = TruncatedIntegratedRate(LZ_WIMProi_keV[0], LZ_WIMProi_keV[1], LZ_target, this_DM)
 	LZ_Max_N_obs[i] = this_Nevts_per_yeaR * LZ_exposure_yr
+
+plot_mass_DM  = 50.0 # GeV/c^2
+plot_xsec_DM  = 1.0e-45 # cm^2
+plot_DM       = DarkMatter(plot_mass_DM, plot_xsec_DM)
+plot_Erange   = n.logspace(start=-1.0, stop=3.0, num=1000)
+plot_diffrate = n.zeros(len(plot_Erange))
+for i in n.arange(len(plot_Erange)):
+	plot_diffrate[i] = DifferentialRate(plot_Erange[i], LZ_target, plot_DM) * 3600. * 24.5
+
+## == Plot differential rate for specific mass
+pyp.figure()
+ax1 = pyp.gca()
+
+ax1.set_xscale('log')
+ax1.set_yscale('log')
+
+pyp.plot(plot_Erange , plot_diffrate ) # , 'ro')
+
+# pyp.xlim(LZ_WIMProi_keV)
+pyp.xlabel("Recoil Energy")
+pyp.ylabel("Differential Rate [day$^{-1}$ kg$^{-1}$ keV$^{-1}$]")
+pyp.title("Differential rate for M$_{\chi}=$"+str(plot_mass_DM))
 
 ## == Plot X1T Result
 pyp.figure()
