@@ -18,6 +18,7 @@ m_neutron_GeV	= 0.93957
 m_neutron_amu	= m_neutron_GeV * (1./amu_to_GeV)	#1.008664
 MW_esc_vel_ms	= 544e3
 Solar_vel_ms	= 230e3
+e_charge        = 1.602176634e-19
 
 ## -- Class Definitions -- ##
 
@@ -71,6 +72,7 @@ class Target:
 		_rn 	= self.FF_Rn 																# fm
 		_s 		= 1.0																		# fm
 		_q 		= n.sqrt(2.0 * self.NuclearMass_GeV * _Er_keV)								# MeV / c
+		_q_fm   = n.sqrt(2.0 * self.NuclearMass_GeV * _Er_keV * 1e-6) / 0.197				# fm^-1 
 		_qrn 	= _q * ( _rn / hbarc_MeV_fm) 											 	# dimensionless
 		_qs		= _q * ( _s  / hbarc_MeV_fm)												# dimensionless
 
@@ -95,9 +97,15 @@ class Target:
 			return n.power(3.0 * _arg2,2.)
 			# return 3.0*_arg2 * n.exp( - (_qs**2)/2.)
 
-
 		elif ( self.FF_type == 4):
-			return 3.0*( n.sin(_qrn) - _qrn * n.cos(_qrn)) / (_qrn**3)
+			## Duda & Kemper -- Fermi Two parameter distribution (values in appendix using Xe131)
+			_a_val = 0.523	# fm
+			_c_val = 5.6384	# fm
+			_rho_c = self.Z * e_charge / ( _c_val * n.log(n.exp(_a_val/_c_val)+1) )
+			_r_val = 1.0 / _q_fm
+			return _rho_c / ( n.exp((_r_val-_c_val)/_a_val) + 1 )
+
+
 		elif ( self.FF_type == 5 ):
 			return n.exp( -_alpha * (_qrn**2) )
 		elif ( self.FF_type == 6 ):
