@@ -31,7 +31,7 @@ class Target:
 	ExposureTime 	= 1.0				# years of operation
 	NuclearMass_GeV = A * amu_to_GeV	# nuclear mass in GeV
 	NuclearMass_kg	= A * amu_to_kg		# nuclear mass in kg
-	FF_type			= 1					# 0 == thin shell [SD] ; 1 == hard sphere [SI] ; 2 == gaussian ; 3 == Helm [S1]
+	FF_type			= 3					# 0 == thin shell [SD] ; 1 == hard sphere [SI] ; 2 == gaussian ; 3 == Helm [S1]
 	FF_Rn			= 1.0				# nuclear form factor radius [fm]
 	FF_alpha		= 1./3.				# nuclear form factor parameterization [dimensionless] only impacts FF type 2
 
