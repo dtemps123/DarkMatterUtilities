@@ -21,7 +21,6 @@ def MinimumVelocity_ms(_Er_keV, _target, _dm):
 def DifferentialRate(_Er_keV, _target, _dm):
 	# Given a dark matter model and a detector model, find the differential rate as function of the recoil energy
 	_DM_num_dens 	= _dm.Rho0 / _dm.Mass 													# cm^-3
-	# _coupling		= _dm.Sigma * _target.A / (2.0 * _dm.Rmass_DM_proton**2) 				# cm^2  x  kg^-2
 	_coupling		= 0.5 * _dm.Sigma * (_target.A**2) / (_dm.Rmass_DM_proton**2) 			# cm^2  x  kg^-2
 	# _formfactor		= _target.FormFactor(_Er_keV)										# dimensionless
 	_formfactor		= _target.HelmFormFactor_v2(_Er_keV)									# dimensionless
