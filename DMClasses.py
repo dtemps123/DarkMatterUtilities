@@ -31,7 +31,7 @@ class Target:
 	ExposureTime 	= 1.0				# years of operation
 	NuclearMass_GeV = A * amu_to_GeV	# nuclear mass in GeV
 	NuclearMass_kg	= A * amu_to_kg		# nuclear mass in kg
-	FF_type			= 3					# 0 == thin shell [SD] ; 1 == hard sphere [SI] ; 2 == gaussian ; 3 == Helm [S1]
+	FF_type			= 1					# Which form factor to use
 	FF_Rn			= 1.0				# nuclear form factor radius [fm]
 	FF_alpha		= 1./3.				# nuclear form factor parameterization [dimensionless] only impacts FF type 2
 
@@ -70,17 +70,37 @@ class Target:
 		_alpha 	= self.FF_alpha 															# dimensionless
 		_rn 	= self.FF_Rn 																# fm
 		_s 		= 1.0																		# fm
-		_q 		= n.sqrt(2.0 * _Er_keV * self.NuclearMass_GeV)								# MeV / c
-		_qrn 	= ( _rn    / hbarc_MeV_fm) * n.sqrt(2.0 * self.NuclearMass_GeV * _Er_keV)	# dimensionless
-		_qs		= (_q * _s / hbarc_MeV_fm)													# dimensionless
+		_q 		= n.sqrt(2.0 * self.NuclearMass_GeV * _Er_keV)								# MeV / c
+		_qrn 	= _q * ( _rn / hbarc_MeV_fm) 											 	# dimensionless
+		_qs		= _q * ( _s  / hbarc_MeV_fm)												# dimensionless
 
 		if   ( self.FF_type == 0 ):
-			return n.sin(_qrn) / _qrn
+			## Lewin & Smith -- thin shell: exp[-(q r_n)^(2/3) / 3]
+			return n.exp(-1.0 * n.power(_qrn,2./3.) / 3.0 )
+		
 		elif ( self.FF_type == 1 ):
-			return 3.0*( n.sin(_qrn) - _qrn * n.cos(_qrn)) / (_qrn**3)
+			## Lewin & Smith -- thin shell: [ sin(q r_n) / (q r_n) ]^2
+			## Confirmed to match spectrum from L&S
+			return n.power( n.sin(_qrn) / _qrn , 2.)
+		
 		elif ( self.FF_type == 2 ):
-			return n.exp( -_alpha * (_qrn**2) )
+			## Lewin & Smith -- solid sphere: exp[-(q r_n)^(2/3) / 5]
+			return n.exp(-1.0 * n.power(_qrn,2./3.) / 5.0 )
+
 		elif ( self.FF_type == 3 ):
+			## Lewin & Smith -- solid sphere: { 3 [ sin(q r_n) - q r_n cos(q r_n)] / (q r_n)^3 }^2
+			## Confirmed to match spectrum from L&S
+			_arg1 = n.sin(_qrn) - (_qrn * n.cos(_qrn)) 
+			_arg2 = _arg1 / n.power(_qrn,3.)
+			return n.power(3.0 * _arg2,2.)
+			# return 3.0*_arg2 * n.exp( - (_qs**2)/2.)
+
+
+		elif ( self.FF_type == 4):
+			return 3.0*( n.sin(_qrn) - _qrn * n.cos(_qrn)) / (_qrn**3)
+		elif ( self.FF_type == 5 ):
+			return n.exp( -_alpha * (_qrn**2) )
+		elif ( self.FF_type == 6 ):
 			return 3.0*( n.sin(_qrn) - _qrn * n.cos(_qrn)) / (_qrn**3) * n.exp( - (_qs**2)/2.)
 		else:
 			if _Er_keV <= 1e5:
