@@ -97,20 +97,7 @@ class Target:
 			_arg2 = _arg1 / n.power(_qrn,3.)
 			return n.power(3.0 * _arg2,2.)
 			# return 3.0*_arg2 * n.exp( - (_qs**2)/2.)
-
-		# elif ( self.FF_type == 4):
-		# 	## Duda & Kemper -- Fermi Two parameter distribution (values in appendix using Xe131)
-		# 	_a_val = 0.523	# fm
-		# 	_c_val = 5.6384	# fm
-		# 	_rho_c = self.Z * e_charge / ( _c_val * n.log(n.exp(_a_val/_c_val)+1) )
-		# 	_r_val = 1.0 / _q_fm
-		# 	return _rho_c / ( n.exp((_r_val-_c_val)/_a_val) + 1 )
-
-
-		# elif ( self.FF_type == 5 ):
-		# 	return n.exp( -_alpha * (_qrn**2) )
-		# elif ( self.FF_type == 6 ):
-		# 	return 3.0*( n.sin(_qrn) - _qrn * n.cos(_qrn)) / (_qrn**3) * n.exp( - (_qs**2)/2.)
+			
 		else:
 			if _Er_keV <= 1e5:
 				return 1.0
