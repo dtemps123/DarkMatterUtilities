@@ -28,7 +28,6 @@ plot_ff_type2 = n.zeros(len(plot_Erange))
 plot_ff_type3 = n.zeros(len(plot_Erange))
 # plot_ff_type4 = n.zeros(len(plot_Erange))
 plot_ff_Helm  = n.zeros(len(plot_Erange))
-plot_ff_Helm2 = n.zeros(len(plot_Erange))
 for i in n.arange(len(plot_Erange)):
 	LZ_target.FF_type = 0
 	plot_ff_type0[i] = LZ_target.FormFactor(plot_Erange[i])
@@ -46,7 +45,6 @@ for i in n.arange(len(plot_Erange)):
 	# plot_ff_type4[i] = LZ_target.FormFactor(plot_Erange[i])
 
 	plot_ff_Helm[i]  = LZ_target.HelmFormFactor(plot_Erange[i])
-	plot_ff_Helm2[i] = LZ_target.HelmFormFactor_v2(plot_Erange[i])
 
 ## == Plot form factors as function of recoil energy
 pyp.figure()
@@ -61,7 +59,6 @@ pyp.plot(plot_Erange , plot_ff_type2 , color='b' , label="(2) Solid sphere: exp[
 pyp.plot(plot_Erange , plot_ff_type3 , color='c' , label="(3) Solid sphere: $\{ 3 [ \sin(q r_n) - q r_n \cos(q r_n)] / (q r_n)^3 \}^2$" )
 # pyp.plot(plot_Erange , plot_ff_type4 , color='k' , label="(4) Two-parameter Fermi" )
 pyp.plot(plot_Erange , plot_ff_Helm  , color='m' , label="Helm Form Factor" )
-pyp.plot(plot_Erange , plot_ff_Helm2 , color='y' , label="Helm Form Factor v2" )
 
 # pyp.xlim(LZ_WIMProi_keV)
 pyp.xlabel("Recoil Energy [keV]")
@@ -81,7 +78,6 @@ pyp.plot(plot_qrn , plot_ff_type1 , 'r:'  , label="(1) Thin shell: $[ \sin (q r_
 pyp.plot(plot_qrn , plot_ff_type3 , 'b:'  , label="(3) Solid sphere: $\{ 3 [ \sin(q r_n) - q r_n \cos(q r_n)] / (q r_n)^3 \}^2$" )
 # pyp.plot(plot_qrn , plot_ff_type4 , 'g-'  , label="(4) Two-parameter Fermi" )
 pyp.plot(plot_qrn , plot_ff_Helm  , color='m' , label="Helm Form Factor" )
-pyp.plot(plot_qrn , plot_ff_Helm2 , color='y' , label="Helm Form Factor v2" )
 
 pyp.xlim([0.0   , 10.0])
 pyp.ylim([1.e-4 , 1.e0])
