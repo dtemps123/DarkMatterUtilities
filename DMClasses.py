@@ -229,11 +229,11 @@ class Halo:
 		v_sol_kms = Solar_vel_ms  / 1e3
 
 		_k0 = n.power(n.pi * self.fVc_km_s*self.fVc_km_s, 1.5);
-		_k1 = ( k0 * erf(v_esc_kms/self.fVc_km_s)  
+		_k1 = ( _k0 * erf(v_esc_kms/self.fVc_km_s)  
 		       - (2./sqrt(n.pi)) * sqrt(v_esc_kms/self.fVc_km_s) * n.exp(-n.power(v_esc_kms/self.fVc_km_s,2)) )
 		flab = velocity * (n.exp(-n.power((velocity - v_sol_kms)/self.fVc_km_s,2)) -
 		                   n.exp(-n.power((velocity + v_sol_kms)/self.fVc_km_s,2)))
-		return flab / (k1) * (n.pi *self.fVc_km_s*self.fVc_km_s/v_sol_kms)
+		return flab / (_k1) * (n.pi *self.fVc_km_s*self.fVc_km_s/v_sol_kms)
 
 	def StandardHaloModel_Integral_ms(self, _vmin_ms):
 		## McCabe [arXiv:1005.0579]
@@ -242,7 +242,7 @@ class Halo:
 		x_earth = (Solar_vel_ms*1e-3)  / self.fVc_km_s
 
 		zeta = 0 ## this will be in (km / s)^-1
-		beta = 1 ## this controls the escape velocity cut: beta=0 (hard cut), beta=1 (soft cut)
+		beta = 1 ## this controls the escape velocity cut: beta=0 (hard cut), beta=1 (soft cut)	
 
 		norm = (  n.power(n.pi,1.5)
 				* n.power(self.fVc_km_s,3.) 
