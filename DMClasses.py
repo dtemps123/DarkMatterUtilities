@@ -106,9 +106,9 @@ class Target:
 
 	def HelmFormFactor(self, _Er_keV):
 		# [arXiv:0608035] Duda et al 2007 (consistent with DMCalc implementation)
-		_a 		= 0.52													# fm
-		_s 		= 0.9													# fm
-		_c	  = (1.23 * n.power(self.A,1./3.)) - 0.60					# fm
+		_a 	 = 0.52														# fm
+		_s 	 = 0.9														# fm
+		_c	 = (1.23 * n.power(self.A,1./3.)) - 0.60					# fm
 		_R1	 = n.sqrt(  (_c**2) 
 						 + ( (7./3.)*(n.pi**2)*(_a**2) ) 
 						 - ( 5.0*(_s**2) )   )							# fm
