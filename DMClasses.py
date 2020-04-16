@@ -117,29 +117,6 @@ class Target:
 				return 0
 
 	def HelmFormFactor(self, _Er_keV):
-		# [arXiv:1412.6091] Vietze et all 2014
-		_J		= 3./2.
-		_c0		= 3.0e-2
-		_c 		= 1.23 * (self.A**(1./3.)) - 0.6						# fm
-		_a 		= 0.52													# fm
-		_s 		= 1.0													# fm
-		_rn		= n.sqrt(_c**2 + (7./3.)*n.pi**2*_a**2 - 5.0*_s**2)		# fm
-
-		_Ss0	= (self.A**2) * (_c0**2) * (2.0*_J + 1.0) / (4.0*n.pi)	# dimensionless
-
-		_q 		= n.sqrt(2.0 * _Er_keV * self.NuclearMass_GeV)			# MeV / c
-		_qs		= (_s  / hbarc_MeV_fm) * _q								# dimensionless
-		_qrn 	= (_rn / hbarc_MeV_fm) * _q								# dimensionless
-
-		_expfac	= n.exp(-1.0 * _qs)										# dimensionless
-		_jterm	= ( 3.0 * jv(1, _qrn) / _qrn )**2						# dimensionless
-
-		# _expfac	= n.exp(-1.0 * _qs**2 / 2.0)						# dimensionless
-		# _jterm	= ( 3.0 * jv(1, _qrn) / _qrn )						# dimensionless
-
-		return _Ss0 * _jterm * _expfac
-
-	def HelmFormFactor_v2(self, _Er_keV):
 		# [arXiv:0608035] Duda et al 2007 (consistent with DMCalc iumplementation)
 		_a 		= 0.52													# fm
 		_s 		= 0.9													# fm
