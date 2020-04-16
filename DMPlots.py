@@ -25,12 +25,40 @@ def Plot_Overlay_Detected_Rate(_fig, _thresh_array, _target, _dm, _c_opt):
 	_label = _target.Name
 	pyp.semilogy(_thresh_array, _rate_pts, _c_opt, label=_label)
 
+def Plot_DMVelocityDist(_dm):
+	_fig = pyp.figure()
+	_vel_array_kms = n.linspace( 1e-3	, 600	, num=600)
+	_HaloModel_dist = _dm.HaloModel.GetHaloPDF_ms(_vel_array_kms*1e3)
+
+	model_label = ""
+	if (_dm.HaloModel.Model == 0):
+		model_label = "MB "
+		plot_y_lims = n.array([1e-13,1e-10])
+	if (_dm.HaloModel.Model == 1):
+		model_label = "SHM "
+		plot_y_lims = n.array([1e-6,1e-2])
+
+	_vel_array_esc = n.append( _vel_array_kms[_vel_array_kms <= MW_esc_vel_ms/1e3] , (MW_esc_vel_ms/1e3)+1. )
+	_DM_vel_dist_esc = n.append( _HaloModel_dist[_vel_array_kms <= MW_esc_vel_ms/1e3] , plot_y_lims[0] )
+
+	pyp.semilogy(_vel_array_kms, _HaloModel_dist , 'b:', label=model_label+r'$v_\mathrm{esc}=600$ km/s')
+	pyp.semilogy(_vel_array_esc, _DM_vel_dist_esc, 'b-', label=model_label+r'$v_\mathrm{esc}=544$ km/s')
+
+	pyp.xlim([0.,600.])
+	pyp.ylim(plot_y_lims)
+
+	pyp.xlabel("DM velocity [km/s]")
+	pyp.ylabel("Probability Density [a.u.]")
+
+	return _fig  
+
 def Plot_Overlay_DM_Vmin(_fig, _threshold_keV, _target, _dm, _c_opt):
-	_fig.gca()
+	_ax1 = _fig.gca()
+	_ylims = _ax1.get_ylim()
 	_vmin = MinimumVelocity_ms(_threshold_keV, _target, _dm) / 1e3
-	_vmin_MBval = _dm.HaloModel.GetHaloPDF_ms(_vmin*1e3)
+	_vmin_Distval = _dm.HaloModel.GetHaloPDF_ms(_vmin*1e3)
 	_label = r'$v_\mathrm{min}$ for $M_\chi=$' + str(_dm.Mass) + ' GeV, ' + _target.Name
-	pyp.semilogy( [_vmin, _vmin] , [1e-10 , _vmin_MBval] , _c_opt, label=_label )
+	pyp.semilogy( [_vmin, _vmin] , [_ylims[0] , _vmin_Distval] , _c_opt, label=_label )
 
 def Plot_MaxRecoilE_axes():
 	_fig = pyp.figure()
@@ -145,21 +173,3 @@ def Plot_RecoilAngleDist(_fig, _target, _theta_arr, _c_opt1, _c_opt2):
 	pyp.plot(_theta_arr, _incoming_E_keV*_Efrac ,_c_opt1, label=_label)
 	pyp.plot(_theta_arr, _incoming_E_keV*_Emax  ,_c_opt2)#,label=_label+" maximum recoil")
 
-def Plot_DMVelocityDist(_dm):
-	_fig = pyp.figure()
-	_vel_array_kms = n.linspace( 1e-3	, 600	, num=600)
-	_HaloModel_dist = _dm.HaloModel.GetHaloPDF_ms(_vel_array_kms*1e3)
-
-	_vel_array_esc = n.append( _vel_array_kms[_vel_array_kms <= MW_esc_vel_ms/1e3] , (MW_esc_vel_ms/1e3)+1. )
-	_DM_vel_dist_esc = n.append( _HaloModel_dist[_vel_array_kms <= MW_esc_vel_ms/1e3] , 1e-10 )
-
-	pyp.semilogy(_vel_array_kms, _HaloModel_dist, 'b:', label=r'MB $v_\mathrm{esc}=600$ km/s')
-	pyp.semilogy(_vel_array_esc, _DM_vel_dist_esc, 'b-', label=r'MB $v_\mathrm{esc}=544$ km/s')
-
-	pyp.xlim([0.,600.])
-	pyp.ylim([1e-10,1e-7])
-
-	pyp.xlabel("DM velocity [km/s]")
-	pyp.ylabel("Probability Density [a.u.]")
-
-	return _fig  
