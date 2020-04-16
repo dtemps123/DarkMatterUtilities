@@ -10,7 +10,6 @@ pyp.rcParams.update({'font.size': 16})
 pyp.rc('text', usetex=True)
 pyp.rc('font', family='serif')
 
-
 LZ_target = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
 LZ_exposure_yr = 1000 / 365.25
 LZ_WIMProi_keV = n.array([1.5 , 7.5])
@@ -48,7 +47,8 @@ ax1.set_yscale('log')
 pyp.plot(plot_Erange , plot_diffrate ) # , 'ro')
 
 # pyp.xlim(LZ_WIMProi_keV)
-pyp.xlabel("Recoil Energy")
+pyp.ylim([1e-12,1e-3])
+pyp.xlabel("Recoil Energy [keV]")
 pyp.ylabel("Differential Rate [day$^{-1}$ kg$^{-1}$ keV$^{-1}$]")
 pyp.title("Differential rate for M$_{\chi}=$"+str(plot_mass_DM))
 
