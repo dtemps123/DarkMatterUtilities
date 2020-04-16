@@ -26,8 +26,9 @@ LZ_Max_N_obs = n.zeros(X1T_Npoints)
 # Calculate max # of salt LZ will observe
 for i in n.arange(X1T_Npoints):
 	this_DM = DarkMatter(X1T_mass_vals[i], X1T_xsec_vals[i])
-	this_Nevts_per_yeaR = TruncatedIntegratedRate(LZ_WIMProi_keV[0], LZ_WIMProi_keV[1], LZ_target, this_DM)
-	LZ_Max_N_obs[i] = this_Nevts_per_yeaR * LZ_exposure_yr
+	this_Nevts_per_year = TruncatedIntegratedRate(LZ_WIMProi_keV[0], LZ_WIMProi_keV[1], LZ_target, this_DM)
+	# LZ_Max_N_obs[i] = this_Nevts_per_year * LZ_exposure_yr	## Get N DM events in full 1000 live-day exposure
+	LZ_Max_N_obs[i] = this_Nevts_per_year / 365.25	## Get N DM events per 1 live-day
 
 plot_mass_DM  = 50.0 # GeV/c^2
 plot_xsec_DM  = 1.0e-45 # cm^2
@@ -76,7 +77,7 @@ pyp.scatter(X1T_mass_vals , LZ_Max_N_obs ) # , 'ro')
 
 pyp.xlim([1.0,2.0e3])
 pyp.xlabel("WIMP Mass [GeV/$c^2$]")
-pyp.ylabel("Max \# of DM events seen in LZ \n using XENON-1T limit")
+pyp.ylabel("Max \# of DM events seen per live-day in LZ \n using XENON-1T limit")
 
 pyp.show()
 
