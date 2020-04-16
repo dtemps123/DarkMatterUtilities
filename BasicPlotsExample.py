@@ -32,7 +32,7 @@ WIMP_80GeV 		= DarkMatter(  80.0 , 1e-46 )
 WIMP_100GeV 	= DarkMatter( 100.0 , 1e-46 )
 
 # Xenon recoils, compare WIMP masses
-fig1 = WIMP_8GeV.Plot_VelocityDist()
+fig1 = Plot_DMVelocityDist(WIMP_8GeV)
 Plot_Overlay_DM_Vmin( fig1, 3.0, xenon_100kg, WIMP_8GeV , 'r-' )
 Plot_Overlay_DM_Vmin( fig1, 3.0, xenon_100kg, WIMP_80GeV, 'g-' )
 fig1.gca()
@@ -41,7 +41,7 @@ pyp.legend(loc = 'upper right')
 pyp.tight_layout()
 
 # Fixed WIMP mass, compare targets
-fig2 = WIMP_8GeV.Plot_VelocityDist()
+fig2 = Plot_DMVelocityDist(WIMP_8GeV)
 Plot_Overlay_DM_Vmin( fig2, 3.0,    xenon_100kg, WIMP_8GeV, 'r-' )
 Plot_Overlay_DM_Vmin( fig2, 3.0,    argon_100kg, WIMP_8GeV, 'g-' )
 Plot_Overlay_DM_Vmin( fig2, 3.0,     neon_100kg, WIMP_8GeV, 'c-' )
