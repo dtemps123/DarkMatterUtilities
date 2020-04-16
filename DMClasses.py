@@ -140,7 +140,7 @@ class Target:
 		return _Ss0 * _jterm * _expfac
 
 	def HelmFormFactor_v2(self, _Er_keV):
-		# [arXiv:0608035] Duda et al 2007
+		# [arXiv:0608035] Duda et al 2007 (consistent with DMCalc iumplementation)
 		_a 		= 0.52													# fm
 		_s 		= 0.9													# fm
 		_c      = (1.23 * n.power(self.A,1./3.)) - 0.60					# fm
