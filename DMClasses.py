@@ -97,7 +97,7 @@ class Target:
 			_arg2 = _arg1 / n.power(_qrn,3.)
 			return n.power(3.0 * _arg2,2.)
 			# return 3.0*_arg2 * n.exp( - (_qs**2)/2.)
-			
+
 		else:
 			if _Er_keV <= 1e5:
 				return 1.0
@@ -274,4 +274,4 @@ class DarkMatter:
 	def __init__(self, _Mass, _Sigma):
 		self.Mass 				= _Mass 		# Mass of DM particle in GeV/c^2
 		self.Sigma 				= _Sigma 		# Spin-independent DM-proton elastic scattering cross-section in cm^2
-		self.Rmass_DM_proton	= (( _Mass * m_proton_GeV ) / ( _Mass + m_proton_GeV)) * GeV_to_kg
+		self.Rmass_DM_proton	= (( _Mass * m_proton_GeV ) / ( _Mass + m_proton_GeV)) * GeV_to_kg 
