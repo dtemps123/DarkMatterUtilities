@@ -144,3 +144,22 @@ def Plot_RecoilAngleDist(_fig, _target, _theta_arr, _c_opt1, _c_opt2):
 	_fig.gca()
 	pyp.plot(_theta_arr, _incoming_E_keV*_Efrac ,_c_opt1, label=_label)
 	pyp.plot(_theta_arr, _incoming_E_keV*_Emax  ,_c_opt2)#,label=_label+" maximum recoil")
+
+def Plot_VelocityDist(_dm):
+	_fig = pyp.figure()
+	_vel_array_kms = n.linspace( 1e-3	, 600	, num=600)
+	_MB_dist = _dm.HaloModel.GetHaloPDF_ms(_vel_array_kms*1e3)
+
+	_vel_array_esc = n.append( _vel_array_kms[_vel_array_kms <= MW_esc_vel_ms/1e3] , (MW_esc_vel_ms/1e3)+1. )
+	_DM_vel_dist_esc = n.append( _DM_vel_dist[_vel_array_kms <= MW_esc_vel_ms/1e3] , 1e-10 )
+
+	pyp.semilogy(_vel_array_kms, _DM_vel_dist, 'b:', label=r'MB $v_\mathrm{esc}=600$ km/s')
+	pyp.semilogy(_vel_array_esc, _DM_vel_dist_esc, 'b-', label=r'MB $v_\mathrm{esc}=544$ km/s')
+
+	pyp.xlim([0.,600.])
+	pyp.ylim([1e-10,1e-7])
+
+	pyp.xlabel("DM velocity [km/s]")
+	pyp.ylabel("Probability Density [a.u.]")
+
+	return _fig  
