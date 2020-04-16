@@ -230,7 +230,7 @@ class Halo:
 
 		_k0 = n.power(n.pi * self.fVc_km_s*self.fVc_km_s, 1.5);
 		_k1 = ( _k0 * erf(v_esc_kms/self.fVc_km_s)  
-		       - (2./sqrt(n.pi)) * sqrt(v_esc_kms/self.fVc_km_s) * n.exp(-n.power(v_esc_kms/self.fVc_km_s,2)) )
+		       - (2./n.sqrt(n.pi)) * n.sqrt(v_esc_kms/self.fVc_km_s) * n.exp(-n.power(v_esc_kms/self.fVc_km_s,2)) )
 		flab = velocity * (n.exp(-n.power((velocity - v_sol_kms)/self.fVc_km_s,2)) -
 		                   n.exp(-n.power((velocity + v_sol_kms)/self.fVc_km_s,2)))
 		return flab / (_k1) * (n.pi *self.fVc_km_s*self.fVc_km_s/v_sol_kms)
