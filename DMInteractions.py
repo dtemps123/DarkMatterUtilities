@@ -23,7 +23,7 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	_DM_num_dens 	= _dm.Rho0 / _dm.Mass 													# cm^-3
 	_coupling		= 0.5 * _dm.Sigma * (_target.A**2) / (_dm.Rmass_DM_proton**2) 			# cm^2  x  kg^-2
 	# _formfactor		= _target.FormFactor(_Er_keV)										# dimensionless
-	_formfactor		= _target.HelmFormFactor_v2(_Er_keV)									# dimensionless
+	_formfactor		= _target.HelmFormFactor(_Er_keV)									# dimensionless
 	_vmin 			= MinimumVelocity_ms(_Er_keV, _target, _dm)								# (m/s)
 	if (_vmin > MW_esc_vel_ms):
 		return 0
