@@ -5,6 +5,7 @@ from scipy.special import erf, jv
 
 ## -- Unit Conversions -- ##
 keV_to_J		= 1.60218e-16
+GeV_to_J		= keV_to_J * 1e6
 kg_to_kev		= 5.60958865e32
 GeV_to_kg		= 1.78266191e-27
 amu_to_GeV		= 0.93149431
@@ -312,10 +313,12 @@ class DarkMatter:
 	Rho0 	= 0.3				# GeV / cm^3
 	Mass 	= 100.0				# GeV
 	Sigma 	= 1e-46				# cm^2
-	Rmass_DM_proton = 1.0		# kg
+	Rmass_DM_proton_kg  = 1.0		# kg
+	Rmass_DM_proton_GeV = 1.0		# kg
 	HaloModel = Halo(1)
 
 	def __init__(self, _Mass, _Sigma):
-		self.Mass 				= _Mass 		# Mass of DM particle in GeV/c^2
-		self.Sigma 				= _Sigma 		# Spin-independent DM-proton elastic scattering cross-section in cm^2
-		self.Rmass_DM_proton	= (( _Mass * m_proton_GeV ) / ( _Mass + m_proton_GeV)) * GeV_to_kg 
+		self.Mass 				 = _Mass 		# Mass of DM particle in GeV/c^2
+		self.Sigma 				 = _Sigma 		# Spin-independent DM-proton elastic scattering cross-section in cm^2
+		self.Rmass_DM_proton_GeV = (( _Mass * m_proton_GeV ) / ( _Mass + m_proton_GeV))
+		self.Rmass_DM_proton_kg	 = self.Rmass_DM_proton_GeV * GeV_to_kg 
