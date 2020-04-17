@@ -41,7 +41,7 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	
 	# get reduced masses
 	_mu_N_GeV = _target.ReducedMass_Nucleus_GeV(_dm.Mass)	# GeV
-	_nu_n_GeV = _dm.Rmass_DM_proton							# GeV
+	_mu_n_GeV = _dm.Rmass_DM_proton							# GeV
 	_mu_N_kg  = DM_Nucleus_ReducedMass_kg(_target, _dm)		# kg
 
 	# get the total nuclear coupling
