@@ -36,7 +36,7 @@ plot_DM       = DarkMatter(plot_mass_DM, plot_xsec_DM)
 plot_Erange   = n.logspace(start=-1.0, stop=3.0, num=1000)
 plot_diffrate = n.zeros(len(plot_Erange))
 for i in n.arange(len(plot_Erange)):
-	plot_diffrate[i] = 4.8 * DifferentialRate(plot_Erange[i], LZ_target, plot_DM) * 3600. * 24.5
+	plot_diffrate[i] = DifferentialRate(plot_Erange[i], LZ_target, plot_DM) * 3600. * 24.5
 
 ## == Plot differential rate for specific mass
 pyp.figure()
