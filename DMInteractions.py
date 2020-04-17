@@ -34,4 +34,15 @@ def IntegratedRate(_threshold_E_keV, _target, _dm):
 def TruncatedIntegratedRate(_threshold_E_keV, _max_E_keV, _target, _dm):
 	# Integrate the differential rate from threshold up to a specified maximum energy
 	_rate			= quad( DifferentialRate, _threshold_E_keV, _max_E_keV, args=(_target, _dm))	# Hz / kg / keV
-	return _rate[0] * (365.25 * 24. * 3600.) * _target.TotalMass 									# Cts / total mass / year\\
+	return _rate[0] * (365.25 * 24. * 3600.) * _target.TotalMass 									# Cts / total mass / year
+
+def DifferentialRate_DW(_Er_keV, _target, _dm):
+	# Given a dark matter model and a detector model, find the differential rate as function of the recoil energy
+	_DM_num_dens 	= _dm.Rho0 / _dm.Mass 													# cm^-3
+	_coupling		= 0.5 * _dm.Sigma * (_target.A**2) / (_dm.Rmass_DM_proton**2) 			# cm^2  x  kg^-2
+	_formfactor		= _target.HelmFormFactor_DW(_Er_keV)									# dimensionless
+	_vmin 			= MinimumVelocity_ms(_Er_keV, _target, _dm)								# (m/s)
+	_vel_integral   = _dm.HaloModel.GetHaloIntegral_ms(_vmin)												# m^-1  x  s
+	_unitfactors	= 10. * c_ms**2 / kg_to_kev												# cm  x  m^-1  x  kg  x  keV^-1  x  m^2  x  s^-2
+	_dru			= _DM_num_dens * _coupling * _formfactor * _vel_integral * _unitfactors	# Hz / kg / keV
+	return _dru
