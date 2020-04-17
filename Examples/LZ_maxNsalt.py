@@ -10,8 +10,11 @@ pyp.rcParams.update({'font.size': 16})
 pyp.rc('text', usetex=True)
 pyp.rc('font', family='serif')
 
+out_file_name = "MaxSalt_perMass.csv"
+out_file = open(out_file_name, "w")
+
 LZ_target_DT = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
-LZ_target_DT.FF_type = 5
+LZ_target_DT.FF_type = 4
 
 LZ_target_DW  = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
 LZ_target_DW.FF_type = 5
@@ -43,32 +46,8 @@ for i in n.arange(X1T_Npoints):
 	LZ_Max_N_obs_DT[i] = this_Nevts_per_year_DT / 365.25	## Get N DM events per 1 live-day
 	LZ_Max_N_obs_DW[i] = this_Nevts_per_year_DW / 365.25	## Get N DM events per 1 live-day
 
-plot_mass_DM  = 10000.0 # GeV/c^2
-plot_xsec_DM  = 1.0e-45 # cm^2
-plot_DM       = DarkMatter(plot_mass_DM, plot_xsec_DM)
-plot_Erange   = n.logspace(start=-1.0, stop=3.0, num=1000)
-plot_diffrate_DT = n.zeros(len(plot_Erange))
-plot_diffrate_DW = n.zeros(len(plot_Erange))
-for i in n.arange(len(plot_Erange)):
-	plot_diffrate_DT[i] = DifferentialRate(plot_Erange[i], LZ_target_DT, plot_DM) * 3600. * 24.5
-	plot_diffrate_DW[i] = DifferentialRate(plot_Erange[i], LZ_target_DW, plot_DM) * 3600. * 24.5
+	out_file.write(str(X1T_mass_vals[i])+","+str(LZ_Max_N_obs_DT[i])+"\n")
 
-## == Plot differential rate for specific mass
-pyp.figure()
-ax1 = pyp.gca()
-
-# ax1.set_xscale('log')
-ax1.set_yscale('log')
-
-pyp.plot(plot_Erange , plot_diffrate_DT , label="Temples")
-pyp.plot(plot_Erange , plot_diffrate_DW , label="Woodward")
-
-pyp.xlim([0.1, 200])
-# pyp.ylim([1e-12,1e-3])
-pyp.xlabel("Recoil Energy [keV]")
-pyp.ylabel("Differential Rate [day$^{-1}$ kg$^{-1}$ keV$^{-1}$]")
-pyp.title("Differential rate for M$_{\chi}=$"+str(plot_mass_DM)+" GeV/$c^2$, $\sigma_n=$"+str(plot_xsec_DM)+"cm$^2$")
-pyp.legend(loc='lower left')
 ## == Plot X1T Result
 pyp.figure()
 ax1 = pyp.gca()
@@ -92,11 +71,12 @@ ax1.set_yscale('log')
 pyp.scatter(X1T_mass_vals , LZ_Max_N_obs_DT , label="Temples")
 pyp.scatter(X1T_mass_vals , LZ_Max_N_obs_DW , label="Woodward")
 
-# pyp.xlim([5.0e0  , 1.0e3 ])
-# pyp.ylim([1.0e-5 , 1.0e-1])
+pyp.xlim([5.0e0  , 1.0e3 ])
+pyp.ylim([1.0e-4 , 1.0e-0])
 pyp.xlabel("WIMP Mass [GeV/$c^2$]")
 pyp.ylabel("Max \# of DM events seen per live-day in LZ \n using XENON-1T limit")
 pyp.legend(loc='lower right')
 
+out_file.close()
 pyp.show()
 
