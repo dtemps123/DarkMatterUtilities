@@ -97,10 +97,13 @@ class Target:
 			_arg2 = _arg1 / n.power(_qrn,3.)
 			return n.power(3.0 * _arg2,2.)
 			# return 3.0*_arg2 * n.exp( - (_qs**2)/2.)
+		
 		elif (self.FF_type == 4 ):
 			return self.HelmFormFactor(_Er_keV)
+		
 		elif (self.FF_type == 5 ):
 			return self.HelmFormFactor_DW(_Er_keV)
+		
 		else:
 			if _Er_keV <= 1e5:
 				return 1.0
