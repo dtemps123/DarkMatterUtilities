@@ -21,14 +21,14 @@ Xe_target_DW = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
 Xe_target_DW.FF_type = 5	## Use David's version of Helm Form Factor
 
 DM_DT = DarkMatter(DM_mass, DM_xsec)
-DM_DT.HaloModel.Model = 1	## Use my version of SHM integral
+DM_DT.HaloModel = Halo(1)	## Use my version of SHM integral
 
 DM_DW = DarkMatter(DM_mass, DM_xsec)
-DM_DW.HaloModel.Model = 2	## Use David's version of SHM integral
+DM_DW.HaloModel = Halo(2)	## Use David's version of SHM integral
 
 # get a recoil energy array [keV]
-# plot_Erange = n.logspace(start=-1.0, stop=3.0  , num=1000)
-plot_Erange = n.linspace(start= 0.1, stop=2.0e2, num=1000)
+plot_Erange = n.logspace(start=-1.0, stop=3.0  , num=1000)
+# plot_Erange = n.linspace(start= 0.1, stop=2.0e2, num=1000)
 plot_qrn    = n.sqrt(2.0 * Xe_target_DT.NuclearMass_GeV * plot_Erange) * ( Xe_target_DT.FF_Rn / hbarc_MeV_fm) 
 plot_vMins  = n.zeros(len(plot_Erange))
 
@@ -90,6 +90,7 @@ ax1.set_yscale('log')
 pyp.plot(plot_Erange , plot_dru_DT , color='m' , label="DT Calc" )
 pyp.plot(plot_Erange , plot_dru_DW , color='g' , label="DW Calc" )
 
+pyp.xlim([0.1 , 200])
 pyp.xlabel("Recoil energy [keV]")
 pyp.ylabel("Differential Rate [cts/day/kg/keV]")
 pyp.legend(loc='lower left')
