@@ -199,6 +199,8 @@ class Halo:
 			return self.MaxwellBoltzmann_PDF_ms(_v_ms)
 		elif (self.Model == 1):
 			return self.StandardHaloModel_PDF_ms(_v_ms)
+		elif (self.Model == 2):
+			return 1.0
 		else:
 			return self.StandardHaloModel_PDF_ms(_v_ms)
 
