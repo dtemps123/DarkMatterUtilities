@@ -90,7 +90,8 @@ ax1.set_yscale('log')
 pyp.plot(plot_Erange , plot_dru_DT , color='m' , label="DT Calc" )
 pyp.plot(plot_Erange , plot_dru_DW , color='g' , label="DW Calc" )
 
-pyp.xlim([0.1 , 200])
+pyp.xlim([0.1 , 1.0e3])
+pyp.ylim([1.0e-12 , 1.0e-3]
 pyp.xlabel("Recoil energy [keV]")
 pyp.ylabel("Differential Rate [cts/day/kg/keV]")
 pyp.legend(loc='lower left')
