@@ -14,42 +14,30 @@ def MinimumVelocity_ms(_Er_keV, _target, _dm):
 	_frac = _q / (2.0*_mu)										# m / s 
 	return _frac
 
-def DifferentialRate_old(_Er_keV, _target, _dm):
-	# Given a dark matter model and a detector model, find the differential rate as function of the recoil energy
-	_DM_num_dens 	= _dm.Rho0 / _dm.Mass 													# cm^-3
-	_coupling		= 0.5 * _dm.Sigma * (_target.A**2) / (_dm.Rmass_DM_proton**2) 			# cm^2  x  kg^-2
-	_formfactor		= _target.FormFactor(_Er_keV)										# dimensionless
-	_vmin 			= MinimumVelocity_ms(_Er_keV, _target, _dm)								# (m/s)
-	_vel_integral   = _dm.HaloModel.GetHaloIntegral_ms(_vmin)												# m^-1  x  s
-	_unitfactors	= 10. * c_ms**2 / kg_to_kev												# cm  x  m^-1  x  kg  x  keV^-1  x  m^2  x  s^-2
-	_dru			= _DM_num_dens * _coupling * _formfactor * _vel_integral * _unitfactors	# Hz / kg / keV
-	return _dru
-
 def DifferentialRate(_Er_keV, _target, _dm):
 	# Given a dark matter model and a detector model, find the differential rate as function of the recoil energy
 
-	# get rho_0 in J/m^3
-	_DM_rho_J_cm3 = (_dm.Rho0 * 1e6) * keV_to_J		# J / cm^3
-	_DM_rho_J_m3  = _DM_rho_J_cm3 * 1.0e3			# J / m^3
-
-	# get DM mass in kg
-	_DM_mass_kg   = _dm.Mass * GeV_to_kg			# kg
-	_DM_mass_J    = _DM_mass_kg * c_ms * c_ms		# J
+	# get conversion factors
+	_rho0_conv_fac    = GeV_to_J * 1.e6 / n.power(c_ms,2)
+	_sigma_A_conv_fac = 1.0e-4
+	_dm_mass_conv_fac = 1.e6/n.power(c_ms,2)
+	_mu_A_conv_fac    = n.power(GeV_to_J,2)/n.power(n.power(c_ms,2),2)
+	_total_conv_fac   = ( _rho0_conv_fac
+						* _sigma_A_conv_fac
+						/(_dm_mass_conv_fac*_mu_A_conv_fac) )
 
 	# get DM number density
-	_DM_num_dens  =_DM_rho_J_m3 / _DM_mass_J        # m^-3
+	_DM_num_dens_cm3  = _dm.Rho0 / _dm.Mass        # cm^-3
 	
 	# get reduced masses
 	_mu_N_GeV = _target.ReducedMass_Nucleus_GeV(_dm.Mass)	# GeV
-	_mu_n_GeV = _dm.Rmass_DM_proton							# GeV
-	_mu_N_kg  = DM_Nucleus_ReducedMass_kg(_target, _dm)		# kg
+	_mu_n_GeV = _dm.Rmass_DM_proton_GeV							# GeV
 
 	# get the total nuclear coupling
 	_sigma_A_cm2   = _dm.Sigma * (_target.A**2) * n.power(_mu_N_GeV/_mu_n_GeV,2)
-	_sigma_A_m2    = _sigma_A_cm2 / 100.					# m^2
 
 	# calculate coupling term
-	_cpl_term  = 0.5 * _sigma_A_m2 / n.power(_mu_N_kg,2)	# m^2 / kg^2
+	_cpl_term  = 0.5 * _sigma_A_cm2 / n.power(_mu_N_GeV,2)	# m^2 / kg^2
 
 	# get form factor
 	_formfactor		= _target.FormFactor(_Er_keV)			# dimensionless
@@ -59,11 +47,10 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	_vel_integral   = _dm.HaloModel.GetHaloIntegral_ms(_vmin)	# s / m
 
 	# get product of terms in current units
-	_unscaled_prod  = _DM_num_dens * _cpl_term * _formfactor * _vel_integral
+	_unscaled_prod  = _DM_num_dens_cm3 * _cpl_term * _formfactor * _vel_integral
 	# this has units of s / kg^2 / m^2
 
-	_scale_facs     = c_ms * c_ms / kg_to_kev
-	_dru			= _scale_facs * _unscaled_prod
+	_dru			= _total_conv_fac * _unscaled_prod
 	return _dru
 
 def IntegratedRate(_threshold_E_keV, _target, _dm):
