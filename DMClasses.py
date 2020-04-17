@@ -122,6 +122,20 @@ class Target:
 
 		return _jterm * _expfac
 
+	def HelmFormFactor_DW(self, _Er_keV):
+		_s 	 = 1.0														# fm
+		_R	 = (1.20 * n.power(self.A,1./3.))					# fm
+		_r   = n.power((n.power(_R,2)-5*n.power(_s,2)),0.5) # m
+		
+		_q 		= n.sqrt(2.0 * _Er_keV * self.NuclearMass_GeV)			# MeV / c
+		_qs		= (_s / hbarc_MeV_fm) * _q								# dimensionless
+		_qr  	= (_r / hbarc_MeV_fm) * _q								# dimensionless
+
+		_expfac	= n.exp(-n.power(_qs,2))							# dimensionless
+		_jterm	= (n.sin(_qr)/(n.power(_qr,2)))-(n.cos(_qr)/_qr)						# dimensionless
+
+		return pow(((3*_jterm)/(_qr)),2)*_expfac
+
 	def LindhardFactor(self, _Er_keV):
 		# Determine the lindhard factor for a nuclear recoil of a specified recoil energy in keV
 		_Z 	= self.Z
@@ -187,6 +201,8 @@ class Halo:
 			return self.MaxwellBoltzmann_Integral_ms(_vmin_ms)
 		elif (self.Model == 1):
 			return self.StandardHaloModel_Integral_ms(_vmin_ms)
+		elif (self.Model == 2):
+			return self.WoodwardHalo_Integral_ms(_vmin_ms)
 		else:
 			return self.StandardHaloModel_Integral_ms(_vmin_ms)
 
@@ -261,6 +277,26 @@ class Halo:
 		 	
 		zeta_ms = zeta / 1e3
 		return zeta_ms
+
+	def WoodwardHalo_Integral_ms(self, _vmin_ms):
+		# astrophysical constants
+		_vmin_kms = _vmin_ms / 1.e3
+		v_esc   =MW_esc_vel_ms/1.e3 # km /s
+		v_0     =self.fVc_km_s # km /s
+		v_earth =230. # km /s
+		y       =v_earth/v_0
+		z       =v_esc/v_0
+		contrib =0
+		x       = _vmin_kms/v_0   
+		Nesc_z = (erf(z)-((2*z*n.exp(-n.power(z,2)))/n.power(n.pi,0.5)))
+		if x<abs(y-z):
+			contrib=(1./(2*Nesc_z*v_0*y))*((erf(x+y))-(erf(x-y))-((4./(n.power(n.pi,0.5)))*y*n.exp(-n.power(z,2))))
+		if x>abs(y-z) and x<(y+z):
+			contrib=(1./(2*Nesc_z*v_0*y))*((erf(z))-(erf(x-y))-((2./(n.power(n.pi,0.5)))*(y+z-x)*n.exp(-n.power(z,2))))    
+		if x>(y+z):
+			contrib=0
+
+		return contrib / 1.e3 ## to get m/s
 
 # Defines a WIMP-like dark matter particle
 # Default is a 100 GeV/c^2 WIMP with local density of 0.3 GeV / cm^3
