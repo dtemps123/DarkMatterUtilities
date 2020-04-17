@@ -10,9 +10,14 @@ pyp.rcParams.update({'font.size': 16})
 pyp.rc('text', usetex=True)
 pyp.rc('font', family='serif')
 
-LZ_target = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
+LZ_target_DT = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
+LZ_target_DT.FF_type = 4
+
+LZ_target_DW  = Target( 131.293 , 54.0 , 7.0e3 , 1.0 , "Xe", 4.7808 )
+LZ_target_DW.FF_type = 5
+
 LZ_exposure_yr = 1000 / 365.25
-LZ_WIMProi_keV = n.array([1.5 , 7.5])
+LZ_WIMProi_keV = n.array([4.0 , 60.0])
 
 # Mass points from X1T curve [GeV/c^2]
 X1T_mass_vals = n.array([5.9748165212, 6.238511403, 6.3900049633, 6.6082962873, 6.7687695585, 6.9664896395, 7.3089407293, 7.594982817, 8.0838709799, 8.5630387015, 9.0706088686, 9.470934657, 9.9842932724, 10.6269810722, 11.0959963982, 11.9241374584, 12.6309352031, 13.6389274235, 14.4473685521, 15.4513124257, 16.4459116143, 17.1717418896, 17.9296062413, 18.9923753766, 20.3121505894, 21.6196413667, 23.1219846081, 24.6103440752, 26.4471179621, 28.4209780392, 30.5421556279, 32.9795250524, 35.4409262515, 37.9037069757, 40.7326206623, 43.7726681215, 47.2658781034, 50.3083771943, 54.0631037937, 57.2676693206, 61.8378269713, 65.8183207205, 69.3859096881, 74.5644730857, 79.364179569, 87.7787646427, 98.9670387567, 108.936010092, 121.647863831, 140.483662313, 155.378438954, 179.437036223, 206.228829275, 240.457760905, 275.037583294, 301.292893216, 342.9715435, 396.076815347, 450.867178626, 530.769712705, 607.098804041, 687.772066178, 782.913412248, 891.21591472, 985.707058888])
@@ -21,14 +26,22 @@ X1T_xsec_vals = n.array([2.522521417950E-44, 1.639377231470E-44, 1.272293053350E
 X1T_Npoints = len(X1T_mass_vals)
 
 # Array to store results points in
-LZ_Max_N_obs = n.zeros(X1T_Npoints)
+LZ_Max_N_obs_DT = n.zeros(X1T_Npoints)
+LZ_Max_N_obs_DW = n.zeros(X1T_Npoints)
 
 # Calculate max # of salt LZ will observe
 for i in n.arange(X1T_Npoints):
-	this_DM = DarkMatter(X1T_mass_vals[i], X1T_xsec_vals[i])
-	this_Nevts_per_year = TruncatedIntegratedRate(LZ_WIMProi_keV[0], LZ_WIMProi_keV[1], LZ_target, this_DM)
+	this_DM_DT = DarkMatter(X1T_mass_vals[i], X1T_xsec_vals[i])
+	this_DM_DT.HaloModel.Model = 1
+
+	this_DM_DW = DarkMatter(X1T_mass_vals[i], X1T_xsec_vals[i])
+	this_DM_DW.HaloModel.Model = 2
+
+	this_Nevts_per_year_DT = TruncatedIntegratedRate(LZ_WIMProi_keV[0], LZ_WIMProi_keV[1], LZ_target_DT, this_DM_DT)
+	this_Nevts_per_year_DW = TruncatedIntegratedRate(LZ_WIMProi_keV[0], LZ_WIMProi_keV[1], LZ_target_DW, this_DM_DW)
 	# LZ_Max_N_obs[i] = this_Nevts_per_year * LZ_exposure_yr	## Get N DM events in full 1000 live-day exposure
-	LZ_Max_N_obs[i] = this_Nevts_per_year / 365.25	## Get N DM events per 1 live-day
+	LZ_Max_N_obs_DT[i] = this_Nevts_per_year_DT / 365.25	## Get N DM events per 1 live-day
+	LZ_Max_N_obs_DW[i] = this_Nevts_per_year_DW / 365.25	## Get N DM events per 1 live-day
 
 plot_mass_DM  = 50.0 # GeV/c^2
 plot_xsec_DM  = 1.0e-45 # cm^2
@@ -36,7 +49,7 @@ plot_DM       = DarkMatter(plot_mass_DM, plot_xsec_DM)
 plot_Erange   = n.logspace(start=-1.0, stop=3.0, num=1000)
 plot_diffrate = n.zeros(len(plot_Erange))
 for i in n.arange(len(plot_Erange)):
-	plot_diffrate[i] = DifferentialRate(plot_Erange[i], LZ_target, plot_DM) * 3600. * 24.5
+	plot_diffrate[i] = DifferentialRate(plot_Erange[i], LZ_target_DT, plot_DM) * 3600. * 24.5
 
 ## == Plot differential rate for specific mass
 pyp.figure()
@@ -73,11 +86,14 @@ ax1 = pyp.gca()
 ax1.set_xscale('log')
 ax1.set_yscale('log')
 
-pyp.scatter(X1T_mass_vals , LZ_Max_N_obs ) # , 'ro')
+pyp.scatter(X1T_mass_vals , LZ_Max_N_obs_DT , label="Temples")
+pyp.scatter(X1T_mass_vals , LZ_Max_N_obs_DW , label="Woodward")
 
-pyp.xlim([1.0,2.0e3])
+pyp.xlim([5.0e0  , 1.0e3 ])
+pyp.ylim([1.0e-5 , 1.0e-1])
 pyp.xlabel("WIMP Mass [GeV/$c^2$]")
 pyp.ylabel("Max \# of DM events seen per live-day in LZ \n using XENON-1T limit")
+pyp.legend(loc='lower right')
 
 pyp.show()
 
