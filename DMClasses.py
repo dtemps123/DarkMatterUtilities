@@ -33,7 +33,7 @@ class Target:
 	ExposureTime 	= 1.0				# years of operation
 	NuclearMass_GeV = A * amu_to_GeV	# nuclear mass in GeV
 	NuclearMass_kg	= A * amu_to_kg		# nuclear mass in kg
-	FF_type			= 1					# Which form factor to use
+	FF_type			= 4					# Which form factor to use
 	FF_Rn			= 1.0				# nuclear form factor radius [fm]
 	FF_alpha		= 1./3.				# nuclear form factor parameterization [dimensionless] only impacts FF type 2
 
@@ -97,7 +97,10 @@ class Target:
 			_arg2 = _arg1 / n.power(_qrn,3.)
 			return n.power(3.0 * _arg2,2.)
 			# return 3.0*_arg2 * n.exp( - (_qs**2)/2.)
-
+		elif (self.FF_type == 4 ):
+			return self.HelmFormFactor(_Er_keV)
+		elif (self.FF_type == 5 ):
+			return self.HelmFormFactor_DW(_Er_keV)
 		else:
 			if _Er_keV <= 1e5:
 				return 1.0
