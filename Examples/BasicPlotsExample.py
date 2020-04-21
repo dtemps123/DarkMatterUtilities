@@ -5,6 +5,11 @@ from DMClasses      import *
 from DMInteractions import *
 from DMPlots        import *
 
+pyp.rcParams['axes.grid'] = True
+pyp.rcParams.update({'font.size': 16})
+pyp.rc('text', usetex=True)
+pyp.rc('font', family='serif')
+
 xenon_100kg		= Target( 131.293 , 54.0 , 100.0 , 1.0 , "Xe", 4.7808 )
 germanium_100kg	= Target(  72.630 , 32.0 , 100.0 , 1.0 , "Ge", 4.0576 )
 argon_100kg		= Target(  39.948 , 18.0 , 100.0 , 1.0 , "Ar", 3.4274 )
