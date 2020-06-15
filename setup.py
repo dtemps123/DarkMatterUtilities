@@ -19,4 +19,9 @@ setup(name='dmutils',
         "Operating System :: OS Independent",
       ],
       python_requires='>=3.6',
+      install_requires=[
+        'numpy',
+        'scipy',
+        'matplotlib'
+      ]
       zip_safe=False)
