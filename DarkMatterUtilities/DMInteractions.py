@@ -1,6 +1,8 @@
 import numpy
 from scipy.integrate import quad
 
+from DarkMatterUtilities.Constants import *
+
 def DM_Nucleus_ReducedMass_kg(_target, _dm):
 	# Returns the target nucelus -- dark matter system reduced mass in Kg
 	_rm_GeV = _target.ReducedMass_Nucleus_GeV(_dm.Mass)
@@ -51,7 +53,7 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	# this has units of s / kg^2 / m^2
 
 	_dru			= _total_conv_fac * _unscaled_prod
-	return _dru
+	return _dru		# unis: keV^{-1} x kg^{-1} x sec^{-1} (magical factor of 0.45* to get scale right)
 
 def IntegratedRate(_threshold_E_keV, _target, _dm):
 	# Integrate the differential rate from threshold up to the maximum energy a DM particle can deposit
