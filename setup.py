@@ -12,6 +12,7 @@ setup(name='dmutils',
       author='Dylan Temples',
       author_email='dtemps123@gmail.com',
       license='MIT',
+      # packages=['DarkMatterUtilities'],
       packages=setuptools.find_packages(),
       classifiers=[
         "Programming Language :: Python :: 3",
@@ -23,5 +24,5 @@ setup(name='dmutils',
         'numpy',
         'scipy',
         'matplotlib'
-      ]
+      ],
       zip_safe=False)
