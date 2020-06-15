@@ -8,6 +8,8 @@ git clone git@github.com:dtemps123/DarkMatterUtilities.git
 cd DarkMatterUtilities
 ```
 Once in the repository directory, install the module using `pip`:
-`pip install -e .`
+```
+pip install -e .
+```
 
 ## Usage
