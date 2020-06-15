@@ -9,3 +9,5 @@ cd DarkMatterUtilities
 ```
 Once in the repository directory, install the module using `pip`:
 `pip install -e .`
+
+## Usage
