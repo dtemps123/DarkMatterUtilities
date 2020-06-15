@@ -1,4 +1,4 @@
-from DMClasses import *
+import numpy
 from scipy.integrate import quad
 
 def DM_Nucleus_ReducedMass_kg(_target, _dm):
@@ -10,7 +10,7 @@ def MinimumVelocity_ms(_Er_keV, _target, _dm):
 	# Returns the minimum velocity [m/s] dark matter must have to create a target recoil of E_r [keV]
 	_mu 	= DM_Nucleus_ReducedMass_kg(_target, _dm)
 	_Er_J 	= _Er_keV * keV_to_J;
-	_q    = n.sqrt(2.0 * _target.NuclearMass_kg * _Er_J)		# kg x m / s
+	_q    = numpy.sqrt(2.0 * _target.NuclearMass_kg * _Er_J)		# kg x m / s
 	_frac = _q / (2.0*_mu)										# m / s 
 	return _frac
 
@@ -18,10 +18,10 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	# Given a dark matter model and a detector model, find the differential rate as function of the recoil energy
 
 	# get conversion factors
-	_rho0_conv_fac    = GeV_to_J * 1.e6 / n.power(c_ms,2)
+	_rho0_conv_fac    = GeV_to_J * 1.e6 / numpy.power(c_ms,2)
 	_sigma_A_conv_fac = 1.0e-4
-	_dm_mass_conv_fac = 1.e6/n.power(c_ms,2)
-	_mu_A_conv_fac    = n.power(GeV_to_J,2)/n.power(n.power(c_ms,2),2)
+	_dm_mass_conv_fac = 1.e6/numpy.power(c_ms,2)
+	_mu_A_conv_fac    = numpy.power(GeV_to_J,2)/numpy.power(numpy.power(c_ms,2),2)
 	_total_conv_fac   = ( _rho0_conv_fac
 						* _sigma_A_conv_fac
 						/(_dm_mass_conv_fac*_mu_A_conv_fac) )
@@ -34,10 +34,10 @@ def DifferentialRate(_Er_keV, _target, _dm):
 	_mu_n_GeV = _dm.Rmass_DM_proton_GeV							# GeV
 
 	# get the total nuclear coupling
-	_sigma_A_cm2   = _dm.Sigma * (_target.A**2) * n.power(_mu_N_GeV/_mu_n_GeV,2)
+	_sigma_A_cm2   = _dm.Sigma * (_target.A**2) * numpy.power(_mu_N_GeV/_mu_n_GeV,2)
 
 	# calculate coupling term
-	_cpl_term  = 0.5 * _sigma_A_cm2 / n.power(_mu_N_GeV,2)	# m^2 / kg^2
+	_cpl_term  = 0.5 * _sigma_A_cm2 / numpy.power(_mu_N_GeV,2)	# m^2 / kg^2
 
 	# get form factor
 	_formfactor		= _target.FormFactor(_Er_keV)			# dimensionless

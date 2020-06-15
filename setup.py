@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(name='dmutils',
       version='1.0',
       description='A plugin for calculating dark matter physics',
-	  long_description=long_description,
+	    long_description=long_description,
       long_description_content_type="text/markdown",
       url='https://github.com/dtemps123/DarkMatterUtilities',
       author='Dylan Temples',
