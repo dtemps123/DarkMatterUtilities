@@ -3,7 +3,7 @@ import matplotlib.pyplot as pyp
 
 ## Import the modules
 import DarkMatterUtilities.Constants as dmcon
-import DarkMatterUtilities.Target as dmt
+import DarkMatterUtilities.Targets as dmt
 
 ## Initialize a complex target
 nat_xe_target = dmt.NaturalXenonTarget()

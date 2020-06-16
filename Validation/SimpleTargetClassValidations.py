@@ -3,7 +3,7 @@ import matplotlib.pyplot as pyp
 
 ## Import the modules
 import DarkMatterUtilities.Constants as dmcon
-import DarkMatterUtilities.Target as dmt
+import DarkMatterUtilities.Targets as dmt
 
 ## Initialize a few simple targets
 avg_xe_target = dmt.SimpleTarget( 131.293 , 54.0 , "Xe")
