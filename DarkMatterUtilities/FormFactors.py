@@ -202,6 +202,7 @@ class FormFactor:
 	def HelmFormFactor_Original(self, _Er_keV):
 		# As written in McCabe (arXiv:1005.0579)
 		# https://arxiv.org/pdf/1005.0579.pdf
+		# This is identical to the HelmFormFactor() in DMCalc (LZ)
 		_a 	 = 0.52														# fm
 		_s 	 = 0.9														# fm
 		_c	 = (1.23 * numpy.power(self.A,1./3.)) - 0.60					# fm
