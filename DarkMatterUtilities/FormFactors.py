@@ -108,7 +108,8 @@ class FormFactor:
 			return 0
 
 	def HelmFormFactor(self, _Er_keV):
-		# [arXiv:0608035] Duda et al 2007 (consistent with DMCalc implementation)
+		# As implemented in DMCalc (LZ), consistent with
+		# [arXiv:0608035] Duda et al 2007
 		_a 	 = 0.52														# fm
 		_s 	 = 0.9														# fm
 		_c	 = (1.23 * numpy.power(self.A,1./3.)) - 0.60				# fm
@@ -169,6 +170,7 @@ class FormFactor:
 		return numpy.power(3.0 * _arg2,2.)
 
 	def TopHat(self, _Er_keV):
+		# As implemented in DMCalc (LZ)
 		_a 	 = 0.52														# fm
 		_s 	 = 0.9														# fm
 		_c	 = (1.23 * numpy.power(self.A,1./3.)) - 0.60				# fm
@@ -183,6 +185,7 @@ class FormFactor:
 		return numpy.power(_jterm,2.)
 
 	def HelmFormFactor_DW(self, _Er_keV):
+		# Calculated from D. Woodward (unsure of source)
 		_s 	 = 1.0														# fm
 		_R	 = (1.20 * numpy.power(self.A,1./3.))					# fm
 		_r   = numpy.power((numpy.power(_R,2)-5*numpy.power(_s,2)),0.5) # m
@@ -197,7 +200,8 @@ class FormFactor:
 		return pow(((3*_jterm)/(_qr)),2)*_expfac
 
 	def HelmFormFactor_Original(self, _Er_keV):
-		# [arXiv:0608035] Duda et al 2007 (consistent with DMCalc implementation)
+		# As written in McCabe (arXiv:1005.0579)
+		# https://arxiv.org/pdf/1005.0579.pdf
 		_a 	 = 0.52														# fm
 		_s 	 = 0.9														# fm
 		_c	 = (1.23 * numpy.power(self.A,1./3.)) - 0.60					# fm
