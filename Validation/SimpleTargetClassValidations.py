@@ -6,14 +6,14 @@ import DarkMatterUtilities.Constants as dmcon
 import DarkMatterUtilities.Targets as dmt
 
 ## Initialize a few simple targets
-avg_xe_target = dmt.SimpleTarget( 131.293 , 54.0 , "Xe")
-avg_ge_target = dmt.SimpleTarget(  72.630 , 32.0 , "Ge")
-avg_ar_target = dmt.SimpleTarget(  39.948 , 18.0 , "Ar")
-avg_si_target = dmt.SimpleTarget(  28.085 , 14.0 , "Si")
-avg_ne_target = dmt.SimpleTarget(  20.180 , 10.0 , "Ne")
-avg_he_target = dmt.SimpleTarget(   4.0   ,  2.0 , "He")
-avg_h_target  = dmt.SimpleTarget(   1.0   ,  1.0 , "H" )
-avg_e_target  = dmt.SimpleTarget( 0.00054858,1.0 , "e-")
+avg_xe_target = dmt.SimpleTarget( 131.293 , 54.0 , "Xe", 4.7808 )
+avg_ge_target = dmt.SimpleTarget(  72.630 , 32.0 , "Ge", 4.0576 )
+avg_ar_target = dmt.SimpleTarget(  39.948 , 18.0 , "Ar", 3.4274 )
+avg_si_target = dmt.SimpleTarget(  28.085 , 14.0 , "Si", 3.1224 )
+avg_ne_target = dmt.SimpleTarget(  20.180 , 10.0 , "Ne", 3.0055 )
+avg_he_target = dmt.SimpleTarget(   4.0   ,  2.0 , "He", 1.6755 )
+avg_h_target  = dmt.SimpleTarget(   1.0   ,  1.0 , "H" , 0.8783 )
+avg_e_target  = dmt.SimpleTarget( 0.00054858,1.0 , "e-", 2.81794092 )
 
 ## Create a plot of the Lindhard
 ## factor (fraction of recoil
