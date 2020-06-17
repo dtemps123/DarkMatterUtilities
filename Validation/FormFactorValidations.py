@@ -81,7 +81,7 @@ pyp.plot(qRn_range, FF_vals_shell2  , label=ff_shell2.FF_Name)
 pyp.plot(qRn_range, FF_vals_sphere2 , label=ff_sphere2.FF_Name)
 pyp.plot(qRn_range, FF_vals_tophat  , label=ff_tophat.FF_Name)
 pyp.plot(qRn_range, FF_vals_helmdw  , label=ff_helmdw.FF_Name)
-pyp.plot(qRn_range, FF_vals_helm00  , label=ff_helm00.FF_Name)
+# pyp.plot(qRn_range, FF_vals_helm00  , label=ff_helm00.FF_Name)
 
 pyp.yscale('log')
 pyp.ylim([1e-4, 4e0])
