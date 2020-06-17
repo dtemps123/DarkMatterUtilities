@@ -5,6 +5,7 @@ kg_to_kev		= 5.60958865e32
 GeV_to_kg		= 1.78266191e-27
 amu_to_GeV		= 0.93149431
 amu_to_kg		= 1.6605402e-27
+invGeV_to_fm    = 0.197327
 
 ## -- Physical Constants -- ##
 c_ms			= 3e8
