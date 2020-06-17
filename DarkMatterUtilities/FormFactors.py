@@ -125,9 +125,9 @@ class FormFactor:
 		# if (_qR < 1e-12):
 		# 	return 1.0
 
-		_expfac	= numpy.exp(-1.0 * _qs**2)									# dimensionless
+		_expfac	= numpy.exp(-1.0 * _qs**2 / 2.0)									# dimensionless
 		_jterm	= ( 3.0 * jv(1, _qR) / _qR )						# dimensionless
-		_ff_val = _jterm * _expfac / 2.0
+		_ff_val = _jterm * _expfac
 
 		return numpy.power(_ff_val,2.)
 
@@ -197,7 +197,7 @@ class FormFactor:
 		_expfac	= numpy.exp(-numpy.power(_qs,2))							# dimensionless
 		_jterm	= (numpy.sin(_qr)/(numpy.power(_qr,2)))-(numpy.cos(_qr)/_qr)						# dimensionless
 
-		return pow(((3*_jterm)/(_qr)),2)*_expfac
+		return numpy.power(((3*_jterm)/(_qr)),2)*_expfac
 
 	def HelmFormFactor_Original(self, _Er_keV):
 		# As written in McCabe (arXiv:1005.0579)
@@ -216,7 +216,7 @@ class FormFactor:
 		_expfac	= numpy.exp(-1.0 * _qs**2)									# dimensionless
 		_jterm	= ( 3.0 * jv(1, _qR1) / _qR1 )**2						# dimensionless
 
-		return _jterm * _expfac / 2
+		return _jterm * _expfac # / 2
 
 	def RecoilE_to_Qifm(self, _Er_keV):
 		_term1 = 2. * self.NuclearMass_GeV * _Er_keV 
