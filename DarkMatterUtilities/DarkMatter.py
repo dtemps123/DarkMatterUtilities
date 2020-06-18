@@ -144,10 +144,18 @@ class DarkMatter:
 	Rmass_DM_proton_kg  = 1.0		# kg
 	Rmass_DM_proton_GeV = 1.0		# GeV
 	HaloModel   = Halo(1)
+	delta_keV   = 0.0				# For inelastic scattering
+	n_param     = 0					# For momentum-dependent scattering
+	q_ref_MeV   = 100.0				# For momentum-dependent scattering
 
-	def __init__(self, _Mass, _Sigma, _HaloModelType=1):
+	def __init__(self, _Mass, _Sigma,
+		_HaloModelType=1, _delta_keV=0.0,
+		_param_n=0, _q_ref_MeV=100.):
 		self.Mass_GeV 	    	 = _Mass 		# Mass of DM particle in GeV/c^2
 		self.Sigma_cm2 		     = _Sigma 		# Spin-independent DM-proton elastic scattering cross-section in cm^2
 		self.Rmass_DM_proton_GeV = (( _Mass * m_proton_GeV ) / ( _Mass + m_proton_GeV))
 		self.Rmass_DM_proton_kg	 = self.Rmass_DM_proton_GeV * GeV_to_kg 
 		self.HaloModel           = Halo(_HaloModelType)
+		self.delta_keV           = _delta_keV
+		self.n_param             = _param_n
+		self.q_ref_MeV           = _q_ref_MeV
