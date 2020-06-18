@@ -96,7 +96,8 @@ class Interaction():
 		_mu_N_GeV    = self.DM_Nucleus_ReducedMass_GeV()
 		_A           = self.Target.A
 
-		_FFq2  = self.Target.FormFactor.EvaluateFormFactorSquared(_Er_keV, _renormalize=False)
+		_FF_norm = True
+		_FFq2  = self.Target.FormFactor.EvaluateFormFactorSquared(_Er_keV, _renormalize=_FF_norm)
 
 		# get the total nuclear coupling
 		_sigma_A_cm2   = _sigma_p_cm2 * numpy.power(_A,2.) * numpy.power(_mu_N_GeV/_mu_p_GeV,2)
@@ -104,6 +105,9 @@ class Interaction():
 		# calculate coupling term
 		_cpl_term  = 0.5 * _sigma_A_cm2 / numpy.power(_mu_N_GeV,2)
 
+		# _E_max = self.Target.RecoilEnergyMax_DM_keV(self.DarkMatter.Mass_GeV)
+		# if ( _Er_keV > _E_max ):
+		# 	return 0.
 		return _cpl_term * _FFq2
 
 	def dSigma_dEr_SD(self, _Er_keV):

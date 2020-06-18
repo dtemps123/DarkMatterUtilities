@@ -112,6 +112,6 @@ def ComparisonPlot_SI_inelastic():
 	pyp.ylabel(r"Differential Rate [keV$^{-1}\times$ kg$^{-1}\times$ day$^{-1}$]")
 	pyp.title(r"SI Inelastic WIMP: $\sigma=$"+str(SI_sigma_per_nucleon_cm2)+r" cm$^2$")
 
-# ComparisonPlot_SI_elastic()
-ComparisonPlot_SI_inelastic()
+ComparisonPlot_SI_elastic()
+# ComparisonPlot_SI_inelastic()
 pyp.show()
