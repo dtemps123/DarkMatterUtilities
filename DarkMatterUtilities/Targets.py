@@ -1,10 +1,13 @@
 import numpy
+
+import DarkMatterUtilities.FormFactors
 from DarkMatterUtilities.Constants import *
 
 ## This class defines a general simple target, which
 ## can be created by a user. The simple target assumes
 ## a single element, with it's average atomic mass
 class SimpleTarget:
+	N_isotopes      = 1
 	Name 			= "Xenon"			# name of target
 	A 				= 1.0				# amu "dimensionless"
 	Z 				= 1.0				# amu "dimensionless"
@@ -93,13 +96,156 @@ class SimpleTarget:
 		_beta 			= MW_esc_vel_ms / c_ms
 		return numpy.sqrt(1./2. * _threshold_GeV * _M_GeV / _beta**2)
 
-
 ## This class defines a complex target consisting of 
 ## xenon isotopes in concentrations determined by 
 ## their natural abundance. Most results from methods
 ## are calculated as a weighted average over the 
 ## specified isotopic abundance.
 class NaturalXenonTarget:
+	## Long name of material
+	Name 			  = "Xenon (natural abundance)"
+	
+	## Number of unique isotopes in the target
+	N_isotopes        = 13
+
+	## Array for atomic numbers of target
+	Z_array           = 54.0 * numpy.ones(N_isotopes)
+	Z_avg             = 0.0   ## calculated on initialization
+
+	## Array for atomic numbers of target
+	A_array           = numpy.arange(start=124., stop=137.)
+	A_avg             = 0.0   ## calculated on initialization
+
+	## Array for nuclear form factor radius parameter r_n
+	FF_Rn_array       = 4.7808 * numpy.ones(N_isotopes)
+
+	## Array for each isotope's abundance in target
+	Abundance_array   = numpy.array([0.095 , 0.000 , 0.089 , 0.000 , 1.910 , 26.401 , 4.071 , 21.232 , 26.909 , 0.000 , 10.436 , 0.000 , 8.857 ]) / 100.
+
+	## Create arrays for each isotope target and abundance fraction
+	Isotope_list      = numpy.zeros(N_isotopes, dtype=object)
+	
+	def __init__(self):
+		print ("Initializing target: "+str(self.Name))
+
+		## Check all array sizes for consistency
+		_all_good = True
+		_all_good = _all_good and (self.N_isotopes==len(self.Z_array))
+		_all_good = _all_good and (self.N_isotopes==len(self.A_array))
+		_all_good = _all_good and (self.N_isotopes==len(self.FF_Rn_array))
+		_all_good = _all_good and (self.N_isotopes==len(self.Abundance_array))
+		_all_good = _all_good and (self.N_isotopes==len(self.Isotope_list))
+
+		if not _all_good:
+			print ("Error: One or more aray has length not equal to N_isotopes")
+			return
+
+		## Rescale abundances to sum to unity
+		_abnd_sum = numpy.sum(self.Abundance_array)
+		self.Abundance_array = self.Abundance_array / _abnd_sum
+
+		## Calculate average A and Z
+		self.Z_avg = self.WeightedAverage(self.Z_array)
+		self.A_avg = self.WeightedAverage(self.A_array)
+
+		## Populate the isotope list
+		for i in numpy.arange(self.N_isotopes):
+			_Z     = self.Z_array[i]
+			_A     = self.A_array[i]
+			_FF_Rn = self.FF_Rn_array[i]
+			_Name  = "Xe"+str(int(_A))
+			_abnd  = self.Abundance_array[i]
+
+			print("Isotope: "+_Name,
+				  "Z="+str(int(_Z)),
+				  "A="+str(int(_A)),
+				  str(100.*_abnd)+"%")
+
+			self.Isotope_list[i] = SimpleTarget(_A, _Z, _Name, _FF_Rn)
+			self.Isotope_list[i].FormFactor = DarkMatterUtilities.FormFactors.FormFactor(self.Isotope_list[i])
+
+	def WeightedAverage(self, _values):
+		_n_values  = len(_values)
+
+		_weights   = self.Abundance_array
+		_n_weights = len(_weights)
+
+		_same_size    = (_n_values==_n_weights)
+		_singular_val = (_n_values==1)
+
+		if not (_same_size or _singular_val):
+			print("Error: in WeightedAverage -- un-matched number of values and weights")
+			return 0
+
+		_wght_mean = numpy.average(_values, weights=_weights, axis=0)
+		return _wght_mean
+
+	def ReducedMass_Nucleus_amu(self, _mass_amu):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].ReducedMass_Nucleus_amu(_mass_amu)
+		return self.WeightedAverage(_ans_array)
+
+	def ReducedMass_Nucleus_GeV(self, _mass_GeV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].ReducedMass_Nucleus_GeV(_mass_GeV)
+		return self.WeightedAverage(_ans_array)
+
+	def ReducedMass_Nucleus_kg(self, _mass_kg):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].ReducedMass_Nucleus_kg(_mass_kg)
+		return self.WeightedAverage(_ans_array)
+
+	def GetMomentumTransfer(self, _Er_keV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].GetMomentumTransfer(_Er_keV)
+		return self.WeightedAverage(_ans_array)
+
+	def GetQRn(self, _Er_keV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].GetQRn(_Er_keV)
+		return self.WeightedAverage(_ans_array)
+
+	def LindhardFactor(self, _Er_keV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].LindhardFactor(_Er_keV)
+		return self.WeightedAverage(_ans_array)
+
+	def RecoilEnergyAngularDist(self, _theta):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].RecoilEnergyAngularDist(_theta)
+		return self.WeightedAverage(_ans_array)
+
+	def RecoilEnergyMax_AnyParticle_keV(self, _incoming_mass_GeV, _incoming_E_keV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].RecoilEnergyMax_AnyParticle_keV(_incoming_mass_GeV, _incoming_E_keV)
+		return self.WeightedAverage(_ans_array)
+
+	def RecoilEnergyMax_DM_keV(self, _dm_mass_GeV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].RecoilEnergyMax_DM_keV(_dm_mass_GeV)
+		return self.WeightedAverage(_ans_array)
+
+	def MinimumDetectableMass_GeV(self, _threshold_keV):
+		_ans_array = numpy.zeros(self.N_isotopes)
+		for i in numpy.arange(self.N_isotopes):
+			_ans_array[i] = self.Isotope_list[i].MinimumDetectableMass_GeV(_threshold_keV)
+		return self.WeightedAverage(_ans_array)
+
+## This class defines a complex target consisting of 
+## xenon isotopes in concentrations determined by 
+## their natural abundance. Most results from methods
+## are calculated as a weighted average over the 
+## specified isotopic abundance.
+class NaturalXenonTarget_2:
 	## Long name of material
 	Name 			= "Xenon (natural abundance)"
 	

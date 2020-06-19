@@ -13,6 +13,7 @@ WIMP_50GeV    = dmdm.DarkMatter(50.0 , 1.0e-45 , _HaloModelType=1)
 
 ## Initialize a simple xenon target
 avg_xe_target = dmt.SimpleTarget( 131.293 , 54.0 , "Xe", 4.7808 )
+# avg_xe_target = dmt.NaturalXenonTarget()
 
 ## Initialize a Helm form factor for the xenon target
 ff_helm       = dmff.FormFactor(avg_xe_target, 1)
