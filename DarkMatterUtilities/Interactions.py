@@ -11,10 +11,10 @@ class Interaction():
 		# self.Target = _target
 		self.DarkMatter = _dm
 
-		# if (self.Target.N_isotopes==1):
-		# 	self.Isotope_list = numpy.array([_target])
-		# else:
-		# 	self.Isotope_list = _target.Isotope_list
+		if (self.Target.N_isotopes==1):
+			self.Isotope_list = numpy.array([_target])
+		else:
+			self.Isotope_list = _target.Isotope_list
 
 		if ( (_int_type.upper()=="SI") or 
 			 (_int_type.upper()=="SD") ):
