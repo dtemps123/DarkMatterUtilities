@@ -72,12 +72,19 @@ class SimpleTarget:
 		_sqfac	= numpy.power(_term1 + _term2 , 2)
 		return 1. - _Mfrac*_sqfac
 
-	def RecoilEnergyMax_AnyParticle_keV(self, _incoming_mass_GeV, _incoming_E_keV):
+	def RecoilEnergyMax_AnyParticle_frac(self, _incoming_mass_GeV):
 		# The maximum energy recoil a particle of a given energy can produce.
 		# Calculated from classical 2-body kinematics
 		_m1 	= _incoming_mass_GeV
 		_m2 	= self.NuclearMass_GeV
 		_scale  = 4.0 * _m1 * _m2 / numpy.power(_m1+_m2,2)
+
+		return _scale
+
+	def RecoilEnergyMax_AnyParticle_keV(self, _incoming_mass_GeV, _incoming_E_keV):
+		# The maximum energy recoil a particle of a given energy can produce.
+		# Calculated from classical 2-body kinematics
+		_scale = self.RecoilEnergyMax_AnyParticle_frac(_incoming_mass_GeV)
 
 		return _incoming_E_keV * _scale
 
