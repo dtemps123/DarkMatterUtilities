@@ -147,11 +147,11 @@ class Interaction():
 
 	def IntegratedRate(self, _threshold_E_keV):
 		# Integrate the differential rate from threshold up to the maximum energy a DM particle can deposit
-		_maxE_keV		= self.Target.RecoilEnergyMax_DM_keV(self.Dark.Mass_GeV)								# keV
-		_rate			= quad( DifferentialRate, _threshold_E_keV, _maxE_keV)	# cts / day / kg
+		_maxE_keV		= self.Target.RecoilEnergyMax_DM_keV(self.DarkMatter.Mass_GeV)								# keV
+		_rate			= quad( self.DifferentialRate, _threshold_E_keV, _maxE_keV)	# cts / day / kg
 		return _rate[0]	# units: kg^{-1} x day^{-1}
 
 	def TruncatedIntegratedRate(self, _threshold_E_keV, _max_E_keV):
 		# Integrate the differential rate from threshold up to a specified maximum energy
-		_rate			= quad( DifferentialRate, _threshold_E_keV, _max_E_keV)	# cts / day / kg
+		_rate			= quad( self.DifferentialRate, _threshold_E_keV, _max_E_keV)	# cts / day / kg
 		return _rate[0] # units: kg^{-1} x day^{-1}
