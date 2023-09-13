@@ -20,7 +20,7 @@ avg_e_target  = dmt.SimpleTarget( 0.00054858,1.0 , "e-", 2.81794092 )
 ## energy into signal) vs recoil
 ## energy.
 ## ==============================
-E_recoil_keV = n.linspace(start=0.0 , stop=30.0, num=1000)
+E_recoil_keV = n.logspace(start=-1.0 , stop=2.0, num=1000)
 L_factors_xe = n.zeros(len(E_recoil_keV))
 L_factors_ge = n.zeros(len(E_recoil_keV))
 L_factors_ar = n.zeros(len(E_recoil_keV))
@@ -41,6 +41,9 @@ for i in n.arange(len(E_recoil_keV)):
 	L_factors_e[i]  = avg_e_target.LindhardFactor(E_recoil_keV[i])
 
 pyp.figure()
+ax1 = pyp.gca()
+ax1.set_xscale('log')
+ax1.set_yscale('log')
 
 pyp.plot(E_recoil_keV, L_factors_xe, label=avg_xe_target.Name)
 pyp.plot(E_recoil_keV, L_factors_ge, label=avg_ge_target.Name)
@@ -187,7 +190,7 @@ pyp.ylabel("Maximum Recoil Energy [keV]")
 ## is sensitive to for a given
 ## energy threshold.
 ## ==============================
-E_thresh_keV_vals = n.logspace(start=-2, stop=2, num=10000)
+E_thresh_keV_vals = n.logspace(start=-5, stop=2, num=10000)
 
 min_DM_mass_GeV_xe = n.zeros(len(E_thresh_keV_vals))
 min_DM_mass_GeV_ge = n.zeros(len(E_thresh_keV_vals))
@@ -209,6 +212,10 @@ for i in n.arange(len(E_thresh_keV_vals)):
 	min_DM_mass_GeV_e[i]  = avg_e_target.MinimumDetectableMass_GeV(E_thresh_keV_vals[i])
 
 pyp.figure()
+ax1 = pyp.gca()
+ax1.set_xscale('log')
+ax1.set_yscale('log')
+
 pyp.plot(E_thresh_keV_vals, min_DM_mass_GeV_xe, label=avg_xe_target.Name)
 pyp.plot(E_thresh_keV_vals, min_DM_mass_GeV_ge, label=avg_ge_target.Name)
 pyp.plot(E_thresh_keV_vals, min_DM_mass_GeV_ar, label=avg_ar_target.Name)
